@@ -1,4 +1,5 @@
 from .data_elements_query import DataQuery,data_main,data_meta
+data_query = DataQuery()
 
 
 
