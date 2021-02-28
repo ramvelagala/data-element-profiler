@@ -74,7 +74,7 @@ class DataQuery:
                 x = '-' + x
             res = x + y
             res_list.append(res)
-        return data1, res_list
+        return list(set(res_list))
 '''
     def json_generation(self):
         data_set = data = {'metatadata':
