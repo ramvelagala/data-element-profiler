@@ -1,13 +1,14 @@
 import pandas as pd
 import re
 import os
+
 print(os.getcwd())
 df = pd.read_csv("test_values.csv")
-#print(df.head())
+# print(df.head())
 data_main = df['loan_amount']
-#print(data_main.head())
+# print(data_main.head())
 
-#from .utils import sql_connector
+# from .utils import sql_connector
 
 '''
 def connect_netezza(query):
@@ -22,13 +23,14 @@ def connect_netezza(query):
 query1 = "select * from example database "
 query_main_test = "select UNIQ_ACCT_IND_QTY FROM PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY LIMIT 100;"
 query_main = "select UNIQ_ACCT_IND_QTY FROM PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY ;"
-query_metadata_defined = """SELECT NUMERIC_PRECISION, NUMERIC_SCALE, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE(TABLE_NAME = 'DBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY') AND(COLUMN_NAME = 'CC_VTG_AGG_MLY_SK');"""
+query_metadata_defined = """SELECT NUMERIC_PRECISION, NUMERIC_SCALE, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE(TABLE_NAME = 'DBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY') AND(COLUMN_NAME = 'CC_VTG_AGG_MLY_SK');"""
 data_main = connect_netezza(query_main)
 data_meta = connect_netezza(query_metadata_defined)
 '''
 
-class DataQuery:
 
+class DataQuery:
 
     def __init__(self):
         self.total_rows = len(data_main.axes[0])
@@ -47,20 +49,20 @@ class DataQuery:
         self.lowest_value = data_main.min()
         self.highest_value = data_main.max()
         self.median_value = data_main.median()
-        #self.num_prec = data_meta["NUMERIC_PRECISION"]
-        #self.num_scale = data_meta["NUMERIC_SCALE"]
-        #self.is_nullable = data_meta["IS_NULLABLE"]
-        #top 25% unique values
-        #bottom 25% unique values
-        #self.data_main2 = self.data_main.drop_duplicates()
-        # self.top_25%_unique = data_meta2.
+        # self.num_prec = data_meta["NUMERIC_PRECISION"]
+        # self.num_scale = data_meta["NUMERIC_SCALE"]
+        # self.is_nullable = data_meta["IS_NULLABLE"]
+        num = data_main.columns[0]
+        n = int(len(df)/4)
+        self.bot_25_perc_unique = data_main.nsmallest(n, num).iloc[:, 0].tolist()
+        self.top_25_perc_unique = data_main.nlargest(n, num).iloc[:,0].tolist()
 
-    def format_generation(self):
+    @staticmethod
+    def format_generation():
         res_list = []
         data1 = [str(num) for num in data_main]
         for num in data1:
             a = num.split('.')
-            x = ''
             y = ''
             dd = re.sub(r'[^\w]', '', a[0])
             x = re.sub(r"\d+", len(dd) * '9', dd)
@@ -75,6 +77,8 @@ class DataQuery:
             res = x + y
             res_list.append(res)
         return list(set(res_list))
+
+
 '''
     def json_generation(self):
         data_set = data = {'metatadata':
@@ -87,4 +91,3 @@ if __name__ == '__main__':
     dataquery = DataQuery
     dataquery.connect_netezza(query1)
 '''
-

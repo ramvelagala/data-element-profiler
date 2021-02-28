@@ -1,20 +1,19 @@
-from .data_elements_query import DataQuery,data_main,data_meta
+from data_elements_query import DataQuery
+
 data_query = DataQuery()
 
 
-
 def schema():
-
-    query_data = DataQuery(data_main, data_meta)
+    query_data = DataQuery()
     gen_format_items = query_data.format_generation()
 
     data = {
         "name": "Report",
-        "properties":{
-            "host_name": query_data.host_name,
+        "properties": {
+            "host_name": "query_data.host_name",
             "Data Store Name": "",
-            "Database Name": query_data.db_name,
-            "Table Name": query_data.table_name
+            "Database Name": "query_data.db_name",
+            "Table Name": "query_data.table_name"
         },
 
         "type": "record",
@@ -23,15 +22,15 @@ def schema():
             {
                 "name": "Column",
                 "type": "string",
-                "values": "",
+                "values": "column_name",
             },
             {
                 "name": "inferred_data_class",
                 "type": "string",
-                "values": "",
+                "values": "code?",
             },
 
-            #metadata
+            # metadata
             {
                 "name": "MetaData",
                 "type": {
@@ -57,12 +56,12 @@ def schema():
                                     {
                                         "name": "Precision",
                                         "type": "int",
-                                        "values": query_data.num_prec,
+                                        "values": "query_data.num_prec",
                                     },
                                     {
                                         "name": "scale",
                                         "type": "int",
-                                        "values": "",
+                                        "values": "query_data.num_scale",
                                     },
                                     {
                                         "name": "data_scale",
@@ -154,7 +153,6 @@ def schema():
                         "type": "array",
                         "values": gen_format_items,
 
-
                     },
                     {
                         "name": "Lowest Value",
@@ -189,12 +187,12 @@ def schema():
                     {
                         "name": "Highest Frequent Value",
                         "type": "string",
-                        "values": query_data.freq_highest_value_value,
+                        "values": query_data.freq_highest_value,
                     },
                     {
                         "name": "Highest Frequency",
                         "type": "string",
-                        "values": query_data.freq_highest_count_count,
+                        "values": query_data.freq_highest_count,
                     },
                     {
                         "name": "highest Frequency percentage",
@@ -212,12 +210,12 @@ def schema():
                     {
                         "name": "top_25",
                         "type": "array",
-                        "value": [],
+                        "value": query_data.top_25_perc_unique,
                     },
                     {
                         "name": "bottom_25",
                         "type": "array",
-                        "value": [],
+                        "value": query_data.bot_25_perc_unique,
                     }
                 ],
 
@@ -226,9 +224,7 @@ def schema():
         ]
     }
 
-
     return data
-
 
 
 print(schema())
