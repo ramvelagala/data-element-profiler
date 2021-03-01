@@ -8,9 +8,8 @@ df = pd.read_csv("test_values.csv")
 #one column -data-main
 col_names = list(df.columns)
 
-for col in col_names:
-    data_main = df[col]
-    print(col)
+
+
 
 # from .utils import sql_connector
 
