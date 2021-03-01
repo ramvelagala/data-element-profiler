@@ -1,4 +1,5 @@
 from data_elements_query import DataQuery
+import json
 
 data_query = DataQuery()
 
@@ -20,70 +21,66 @@ def schema():
 
         "fields": [
             {
-                "name": "Column",
-                "type": "string",
-                "values": "column_name",
-            },
+            "name": "Column",
+            "type": "string",
+            "default": "column_name"
+         },
             {
                 "name": "inferred_data_class",
                 "type": "string",
-                "values": "code?",
+                "default": "code"
             },
 
-            # metadata
             {
                 "name": "MetaData",
                 "type": {
                     "name": "MetaData",
                     "type": "record",
-                    "fields": [
-                        {
+                    "fields": [{
+                        "name": "Inferred",
+                        "type": {
                             "name": "Inferred",
-                            "type": {
-                                "name": "Inferred",
-                                "type": "record",
-                                "fields": [
-                                    {
-                                        "name": "Data_type",
-                                        "type": "string",
-                                        "values": "",
-                                    },
-                                    {
-                                        "name": "data_length",
-                                        "type": "int",
-                                        "values": "",
-                                    },
-                                    {
-                                        "name": "Precision",
-                                        "type": "int",
-                                        "values": "query_data.num_prec",
-                                    },
-                                    {
-                                        "name": "scale",
-                                        "type": "int",
-                                        "values": "query_data.num_scale",
-                                    },
-                                    {
-                                        "name": "data_scale",
-                                        "type": "int",
-                                        "values": "",
-                                    }
-                                ]
-                            }
-                        },
+                            "type": "record",
+                            "fields": [{
+                                "name": "Data_type",
+                                "type": "string",
+                                "default": ""
+                            },
+                                {
+                                    "name": "data_length",
+                                    "type": "int",
+                                    "default": ""
+                                },
+                                {
+                                    "name": "Precision",
+                                    "type": "int",
+                                    "default": "query_data.num_prec"
+                                },
+                                {
+                                    "name": "scale",
+                                    "type": "int",
+                                    "default": "query_data.num_scale"
+                                },
+                                {
+                                    "name": "data_scale",
+                                    "type": "int",
+                                    "default": ""
+                                }
+                            ]
+                        }
+                    },
                         {
                             "name": "Defined",
                             "type": {
                                 "name": "Defined",
                                 "type": "record",
-                                "fields": [
+                                "fields": [{
+                                    "name": "Data_type",
+                                    "type": "string",
+                                    "default": ""
+                                },
                                     {
-                                        "name": "Data_type",
-                                        "type": "string",
-                                        "values": "",
-                                    },
-                                    {
-                                        "name": "data_lenght",
+                                        "name": "data_length",
                                         "type": "int"
                                     },
                                     {
@@ -111,120 +108,135 @@ def schema():
                     ]
                 }
             },
-            # Domain Higlights
             {
                 "name": "domain_highlights",
-                "type": {
+                "type": ["", {
                     "name": "domain_highlights",
                     "type": "record",
-                    "fields": [
-                        {
-                            "name": "TotalRows",
-                            "type": "int",
-                            "values": query_data.total_rows,
-                        },
+                    "fields": [{
+                        "name": "TotalRows",
+                        "type": "int",
+                        "default": int(query_data.total_rows)
+                    },
                         {
                             "name": "Cardinality",
                             "type": "int",
-                            "values": query_data.cardinality,
+                            "default": int(query_data.cardinality)
                         },
                         {
                             "name": "per_of_Cardinality",
                             "type": "int",
-                            "values": query_data.perc_of_cardinality,
+                            "default": float(query_data.perc_of_cardinality)
                         },
                         {
                             "name": "Nulls",
                             "type": "int",
-                            "values": query_data.num_null_values,
+                            "default": int(query_data.num_null_values)
                         },
                         {
                             "name": "no_of_general_formats",
                             "type": "int",
-                            "values": len(gen_format_items),
+                            "default": int(len(gen_format_items))
                         },
 
                     ]
-                },
-                "properties": {
+                }],
+                "properties": [
 
                     {
                         "name": "general_formats",
                         "type": "array",
-                        "values": gen_format_items,
+                        "default": list(gen_format_items),
 
                     },
                     {
                         "name": "Lowest Value",
                         "type": "string",
-                        "values": query_data.lowest_value,
+                        "default": str(query_data.lowest_value)
                     },
                     {
                         "name": "Highest Value",
                         "type": "string",
-                        "values": query_data.highest_value,
+                        "default": str(query_data.highest_value)
                     },
                     {
                         "name": "Median Value",
                         "type": "string",
-                        "values": query_data.median_value,
+                        "default": str(query_data.median_value)
                     },
                     {
                         "name": "Least Frequent Value",
                         "type": "string",
-                        "values": query_data.freq_lowest_value,
+                        "default": str(query_data.freq_lowest_value)
                     },
                     {
                         "name": "Lowest Frequency",
                         "type": "string",
-                        "values": query_data.freq_lowest_count,
+                        "default": str(query_data.freq_lowest_count)
                     },
                     {
                         "name": "Lowest Frequency percentage",
                         "type": "string",
-                        "values": query_data.freq_lowest_perc,
+                        "default": query_data.freq_lowest_perc,
                     },
                     {
                         "name": "Highest Frequent Value",
                         "type": "string",
-                        "values": query_data.freq_highest_value,
+                        "default": str(query_data.freq_highest_value)
                     },
                     {
                         "name": "Highest Frequency",
                         "type": "string",
-                        "values": query_data.freq_highest_count,
+                        "default": str(query_data.freq_highest_count)
                     },
                     {
                         "name": "highest Frequency percentage",
                         "type": "string",
-                        "values": query_data.freq_highest_perc,
-                    },
-
-                }
+                        "default": ""
+                    }
+                ]
             },
 
             {
                 "name": "domain_values",
                 "type": "array",
-                "fields": [
-                    {
-                        "name": "top_25",
-                        "type": "array",
-                        "value": query_data.top_25_perc_unique,
-                    },
+                "fields": [{
+                    "name": "top_25",
+                    "type": "array",
+                    "default": [""]
+                },
                     {
                         "name": "bottom_25",
                         "type": "array",
-                        "value": query_data.bot_25_perc_unique,
+                        "default": [""]
                     }
                 ],
 
-            },
-
+            }
         ]
     }
-
-    return data
+    print(type(data))
+    result = json.dumps(data,indent =4)
+    return result
 
 
 print(schema())
+
+
+d={
+    "type": "record",
+    "name": "taxi",
+    "namespace": "com.streamsets",
+    "doc": "Taxi transaction",
+    "fields": [
+        {
+            "name": "medallion",
+            "type": "string"
+        },
+        {
+            "name": "hack_license",
+            "type": "string",
+            "default": ""
+        }
+    ]
+}
