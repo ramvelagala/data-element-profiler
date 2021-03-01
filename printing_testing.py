@@ -22,4 +22,5 @@ def printing():
     print(data_query.median_value)
     print(data_query.format_generation())
 
+
 printing()
