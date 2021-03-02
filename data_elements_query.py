@@ -2,29 +2,11 @@
 
 import pandas as pd
 import re
-from .utils import sql_connector
-
-
-def connect_netezza(query):
-    """Test netezza connections."""
-    netezza = sql_connector('NETEZZA')
-    df = pd.read_sql(query, netezza)
-    return df
-
-
-query_main_test = "select UNIQ_ACCT_IND_QTY FROM PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY LIMIT 10;"
-query_main = "select UNIQ_ACCT_IND_QTY FROM PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY ;"
-query_metadata_defined = "SELECT NUMERIC_PRECISION, NUMERIC_SCALE, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE(" \
-                         "TABLE_NAME = 'DBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY') AND(COLUMN_NAME = " \
-                         "'CC_VTG_AGG_MLY_SK'); "
-data_main = connect_netezza(query_main)
-data_meta = connect_netezza(query_metadata_defined)
-
 
 class DataQuery:
     """Class to get required fields in data-profiling."""
 
-    def __init__(self):
+    def __init__(self, data_main, data_meta):
         """Init to to generate desired fields."""
         self.total_rows = len(data_main.axes[0])
         self.cardinality = len(pd.unique(data_main))
@@ -53,7 +35,7 @@ class DataQuery:
         # self.top_25_perc_unique = data_main.nlargest(n, num).iloc[:,0].tolist()
 
     @staticmethod
-    def format_generation():
+    def format_generation(data_main):
         """Generate general format of values in column."""
         res_list = []
         data1 = [str(num) for num in data_main]
@@ -74,5 +56,5 @@ class DataQuery:
         return list(set(res_list))
 
 
-if __name__ == '__main__':
-    connect_netezza(data_main)
+# if __name__ == '__main__':
+#     connect_netezza(data_main)
