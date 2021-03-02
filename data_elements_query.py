@@ -2,7 +2,7 @@
 
 import pandas as pd
 import re
-#from .utils import sql_connector
+from .utils import sql_connector
 
 
 def connect_netezza(query):
