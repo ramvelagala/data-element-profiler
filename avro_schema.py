@@ -3,13 +3,13 @@
 from .data_elements_query import DataQuery
 import json
 
-data_query = DataQuery()
+# data_query = DataQuery()
 
 
-def schema():
+def schema(query_data, gen_format_items):
     """Generate avro-schema."""
-    query_data = DataQuery()
-    gen_format_items = query_data.format_generation()
+    # query_data = DataQuery()
+    # gen_format_items = query_data.format_generation()
 
     data = {
         "name": "Report",
@@ -36,12 +36,12 @@ def schema():
             {
                 "name": "count of -1 values",
                 "type": "int",
-                "default": int(data_query.count_err)
+                "default": int(query_data.count_err)
             },
             {
                 "name": "perc of -1 values",
                 "type": "float",
-                "default": float(data_query.count_err_perc)
+                "default": float(query_data.count_err_perc)
             },
 
             {
@@ -234,4 +234,3 @@ def schema():
 
 
 print(schema())
-
