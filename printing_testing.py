@@ -21,6 +21,8 @@ def printing():
     print(data_query.highest_value)
     print(data_query.median_value)
     print(data_query.format_generation())
+    print(data_query.bot_25_perc_unique)
+    print(data_query.top_25_perc_unique)
 
 
 printing()

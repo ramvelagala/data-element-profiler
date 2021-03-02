@@ -4,6 +4,7 @@ import os
 
 print(os.getcwd())
 df = pd.read_csv("test_values.csv")
+data_main = df["loan_amount"]
 # print(df.head())
 #one column -data-main
 col_names = list(df.columns)
@@ -55,10 +56,10 @@ class DataQuery:
         # self.num_prec = data_meta["NUMERIC_PRECISION"]
         # self.num_scale = data_meta["NUMERIC_SCALE"]
         # self.is_nullable = data_meta["IS_NULLABLE"]
-        # num = data_main.columns[0]
-        # n = int(len(df)/4)
-        # self.bot_25_perc_unique = data_main.nsmallest(n, num).iloc[:, 0].tolist()
-        # self.top_25_perc_unique = data_main.nlargest(n, num).iloc[:,0].tolist()
+        name = list(data_main.columns)[0]
+        n = int(len(df)/4)
+        self.bot_25_perc_unique = data_main.nsmallest(n, list(data_main.columns)[0]).iloc[:, 0].tolist()
+        self.top_25_perc_unique = data_main.nlargest(n, list(data_main.columns)[0]).iloc[:, 0].tolist()
 
     @staticmethod
     def format_generation():
