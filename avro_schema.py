@@ -1,10 +1,13 @@
-from data_elements_query import DataQuery
+"""Data-profiling avro_schema."""
+
+from .data_elements_query import DataQuery
 import json
 
 data_query = DataQuery()
 
 
 def schema():
+    """Generate avro-schema."""
     query_data = DataQuery()
     gen_format_items = query_data.format_generation()
 
@@ -21,14 +24,24 @@ def schema():
 
         "fields": [
             {
-            "name": "Column",
-            "type": "string",
-            "default": "column_name"
-         },
+                "name": "Column",
+                "type": "string",
+                "default": "column_name"
+            },
             {
                 "name": "inferred_data_class",
                 "type": "string",
                 "default": "code"
+            },
+            {
+                "name": "count of -1 values",
+                "type": "int",
+                "default": int(data_query.count_err)
+            },
+            {
+                "name": "perc of -1 values",
+                "type": "float",
+                "default": float(data_query.count_err_perc)
             },
 
             {
@@ -54,7 +67,7 @@ def schema():
                                 {
                                     "name": "Precision",
                                     "type": "int",
-                                    "default": "query_data.num_prec"
+                                    "default": "query_data.num_perc"
                                 },
                                 {
                                     "name": "scale",
@@ -216,27 +229,9 @@ def schema():
         ]
     }
     print(type(data))
-    result = json.dumps(data,indent =4)
+    result = json.dumps(data, indent=4)
     return result
 
 
 print(schema())
 
-
-d={
-    "type": "record",
-    "name": "taxi",
-    "namespace": "com.streamsets",
-    "doc": "Taxi transaction",
-    "fields": [
-        {
-            "name": "medallion",
-            "type": "string"
-        },
-        {
-            "name": "hack_license",
-            "type": "string",
-            "default": ""
-        }
-    ]
-}
