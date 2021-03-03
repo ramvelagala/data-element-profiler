@@ -1,217 +1,232 @@
+{
+    "name": "Report",
+
+    "type": "record",
+
+
+    "fields": [
         {
-        "name": "Report",
-        "properties": {
-            "host_name": "query_data.host_name",
-            "Data Store Name": "",
-            "Database Name": "query_data.db_name",
-            "Table Name": "query_data.table_name"
+            "name": "Column",
+            "type": "string"
+
+        },
+        {
+            "name": "inferred_data_class",
+            "type": "string"
+
         },
 
-        "type": "record",
-
-        "fields": [
-            {
-                "name": "Column",
-                "type": "string",
-                "default": "column_name"
-            },
-            {
-                "name": "inferred_data_class",
-                "type": "string",
-                "default": "code"
-            },
-            {
-                "name": "count_of_-1_values",
-                "type": "int",
-                "default": int(query_data.count_err)
-            },
-            {
-                "name": "perc_of_-1_values",
-                "type": "float",
-                "default": float(query_data.count_err_perc)
-            },
-
-            {
+        {
+            "name": "MetaData",
+            "type": {
                 "name": "MetaData",
-                "type": {
-                    "name": "MetaData",
-                    "type": "record",
-                    "fields": [{
+                "type": "record",
+                "fields": [{
+                    "name": "Defined",
+                    "type": {
                         "name": "Defined",
+                        "type": "record",
+                        "fields": [
+                            {
+                                "name": "Data_type",
+                                "type": "string"
+
+                            },
+                            {
+                                "name": "data_length",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "Precision",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "scale",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "data_scale",
+                                "type": "int"
+
+                            }
+                            ]
+                    }
+                },
+
+                    {
+                        "name": "Inferred",
                         "type": {
-                            "name": "Defined",
+                            "name": "Inferred",
                             "type": "record",
                             "fields": [
-                                {
-                                    "name": "Data_type",
-                                    "type": "string",
-                                    "default": query_data.data_type
-                                },
-                                {
-                                    "name": "data_length",
-                                    "type": "int",
-                                    "default": int(query_data.data_len)
-                                },
-                                {
-                                    "name": "Precision",
-                                    "type": "int",
-                                    "default": int(query_data.num_perc)
-                                },
-                                {
-                                    "name": "scale",
-                                    "type": "int",
-                                    "default": int(query_data.num_scale)
-                                },
-                                {
-                                    "name": "data_scale",
-                                    "type": "int",
-                                    "default": int(query_data.data_scale)
-                                }
-                                ]
-                        }
-                    },
+                            {
+                                "name": "Data_type",
+                                "type": "string"
 
-                        {
-                            "name": "Inferred",
-                            "type": {
-                                "name": "Inferred",
-                                "type": "record"
-                                "fields": [
-                                {
-                                    "name": "Data_type",
-                                    "type": "string",
-                                    "default": query_data.data_type
-                                },
-                                {
-                                    "name": "data_length",
-                                    "type": "int",
-                                    "default": int(query_data.data_len_inf)
-                                },
-                                {
-                                    "name": "Precision",
-                                    "type": "int",
-                                    "default": int(query_data.num_perc_inf)
-                                },
-                                {
-                                    "name": "scale",
-                                    "type": "int",
-                                    "default": int(query_data.num_scale_inf)
-                                },
-                                {
-                                    "name": "data_scale",
-                                    "type": "int",
-                                    "default": int(query_data.data_scale_inf)
-                                }
-                                ]
+                            },
+                            {
+                                "name": "data_length",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "Precision",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "scale",
+                                "type": "int"
+
+                            },
+                            {
+                                "name": "data_scale",
+                                "type": "int"
+
                             }
+                            ]
                         }
-                    ]
-                }
-            },
-            {
-                "name": "domain_highlights",
-                "type": ["", {
-                    "name": "domain_highlights",
-                    "type": "record",
-                    "fields": [{
-                        "name": "TotalRows",
-                        "type": "int",
-                        "default": int(query_data.total_rows)
-                    },
-                        {
-                            "name": "Cardinality",
-                            "type": "int",
-                            "default": int(query_data.cardinality)
-                        },
-                        {
-                            "name": "per_of_Cardinality",
-                            "type": "float",
-                            "default": float(query_data.perc_of_cardinality)
-                        },
-                        {
-                            "name": "Nulls",
-                            "type": "int",
-                            "default": int(query_data.num_null_values)
-                        },
-                        {
-                            "name": "no_of_general_formats",
-                            "type": "int",
-                            "default": int(len(gen_format_items))
-                        },
-
-                    ]
-                }],
-                "properties": [
-
-                    {
-                        "name": "general_formats",
-                        "type": "array",
-                        "default": list(gen_format_items),
-
-                    },
-                    {
-                        "name": "Lowest_Value",
-                        "type": "string",
-                        "default": str(query_data.lowest_value)
-                    },
-                    {
-                        "name": "Highest_Value",
-                        "type": "string",
-                        "default": str(query_data.highest_value)
-                    },
-                    {
-                        "name": "Median_Value",
-                        "type": "string",
-                        "default": str(query_data.median_value)
-                    },
-                    {
-                        "name": "Least_Frequent_Value",
-                        "type": "string",
-                        "default": str(query_data.freq_lowest_value)
-                    },
-                    {
-                        "name": "Lowest_Frequency",
-                        "type": "string",
-                        "default": str(query_data.freq_lowest_count)
-                    },
-                    {
-                        "name": "Lowest_Frequency_percentage",
-                        "type": "float",
-                        "default": float(query_data.freq_lowest_perc)
-                    },
-                    {
-                        "name": "Highest_Frequent_Value",
-                        "type": "int",
-                        "default": int(query_data.freq_highest_value)
-                    },
-                    {
-                        "name": "Highest_Frequency",
-                        "type": "int",
-                        "default":int(query_data.freq_highest_count)
-                    },
-                    {
-                        "name": "highest_Frequency_percentage",
-                        "type": "float",
-                        "default": float(query_data.freq_lowest_perc)
                     }
                 ]
-            },
+            }
+        },
+        {
+            "name": "domain_highlights",
+            "type":
+            [
+            {
+                "name": "domain_highlights",
+                "type": "record",
+                "fields": [
+                    {
+                        "name": "TotalRows",
+                        "type": "int"
 
+                    },
+                    {
+                        "name": "Cardinality",
+                        "type": "int"
+
+                    },
+                    {
+                        "name": "per_of_Cardinality",
+                        "type": "float"
+
+                    },
+                    {
+                        "name": "Nulls",
+                        "type": "int"
+
+                    },
+                    {
+                        "name": "no_of_general_formats",
+                        "type": "int",
+                        "items": "string"
+
+                    },
+                    {
+                    "name": "general_formats",
+                    "type":
+					{
+						"type": "array",
+						"items": "string",
+						"name": "general_formats"
+					}
+
+
+                },
+                {
+                    "name": "Lowest_Value",
+                    "type": "string"
+
+                },
+                {
+                    "name": "Highest_Value",
+                    "type": "string"
+
+                },
+                {
+                    "name": "Median_Value",
+                    "type": "string"
+
+                },
+                {
+                    "name": "Least_Frequent_Value",
+                    "type": "string"
+
+                },
+                {
+                    "name": "Lowest_Frequency",
+                    "type": "string"
+
+                },
+                {
+                    "name": "Lowest_Frequency_percentage",
+                    "type": "float"
+
+                },
+                {
+                    "name": "Highest_Frequent_Value",
+                    "type": "int"
+
+                },
+                {
+                    "name": "Highest_Frequency",
+                    "type": "int"
+
+                },
+                {
+                    "name": "highest_Frequency_percentage",
+                    "type": "float"
+
+                }
+
+                ]
+            }
+            ]
+
+        },
+		{
+            "name": "domain_values",
+            "type":
+            [
             {
                 "name": "domain_values",
-                "type": "array",
-                "fields": [{
-                    "name": "top_25",
-                    "type": "array",
-                    "default": [""]
-                },
-                    {
-                        "name": "bottom_25",
-                        "type": "array",
-                        "default": [""]
-                    }
-                ],
+                "type": "record",
+                "fields":
+				[
+				{
 
-            }
-        ]
-    }
+                    "name": "top_25",
+                    "type":
+						{
+							"type": "array",
+							"items": "double",
+							"name": "top_25"
+						}
+
+				},
+				{
+
+                    "name": "bot_25",
+                    "type":
+						{
+							"type": "array",
+							"items": "double",
+							"name": "bot_25"
+						}
+
+				}
+
+				]
+
+			}
+			]
+		}
+
+
+    ]
+}
