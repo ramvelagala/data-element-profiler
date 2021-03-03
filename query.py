@@ -5,29 +5,16 @@ db_name = ""
 statement_1 ="from "+db_name+"."+schema+"."+tab_name
 statement_2 = ""
 
-query_total_rows = "select count(*) as Total_Rows from "+db_name+"."+schema+"."+tab_name
-Total_Rows = select_netezza(query_total_rows)
-query_cardinality = "select count(distinct") as cardinality from PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY  limit
-    50;
-    "
-
-
-Cardinality = select_netezza()
-% _of_Cardinality = (Cardinality / Total_Rows) * 100
-query_non_null = "select count(UNIQ_ACCT_IND_QTY) as non_null from
-PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY;
-"
-num_non_nul1_values = select_netezza(query_non_null)
-num_null_values = Total_Rows - query_non_null
-query_min_value = "select min(UNIQ_ACCT_IND_QTY) as Min_Value from
-PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY;
-"
-min_value = select_netezza(query_min_value)
-query_max_value = "select max(UNIQ_ACCT_IND_QTY) as Max_Value from
-PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY;
-"
-max_value = select_netezza(query_max_value)
-median_value = Total_Rows.mean()
+query_total_rows = "select count(*) as Total_Rows from {0}.{1}.{2}".format(db_name, schema, tab_name)
+query_cardinality = "select count(distinct {0}) as cardinality from {1}.{2}.{3} \
+limit 50;".format(col_name, db_name,schema, tab_name)
+perc_of_Cardinality = "select count(distinct {0})/count(*) as perc_cardinality from {1}.{2}.{3} \
+limit 50;".format(col_name, db_name,schema, tab_name) 
+query_non_null = "select count({0}) as non_null from {1}.{2}.{3}".format(col_name,db_name, schema, tab_name)
+num_null_values = "select count(*)-count({0}) as non_null from {1}.{2}.{3}".format(col_name,db_name, schema, tab_name)
+query_min_value = "select min({0}) as Min_Value from {1}.{2}.{3}".format(col_name,db_name, schema, tab_name)
+query_max_value = "select max({0}) as Min_Value from {1}.{2}.{3}".format(col_name,db_name, schema, tab_name)
+#median_value = Total_Rows.mean()
 query_least_frequent_value_freq_perc = "select UNIQ_ACCT_IND_QTY, count(*)
 from PBKDMDB.ADMIN.M_BRK_FC_CC_VTG_AGG_MLY group
 
