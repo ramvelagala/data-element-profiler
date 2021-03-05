@@ -1,308 +1,100 @@
-{
-    "name": "Report",
-
-    "type": "record",
-
-    "fields": [
-        {
-            "name": "Column",
-            "type": "string",
-            "doc": "name of the column.",
-            "default": " "
-        },
-        {
-            "name": "inferred_data_class",
-            "type": "string",
-            "doc" : "inferred data class of the column."
-
-        },
-
-        {
-            "name": "MetaData",
-            "type": {
-                "name": "MetaData",
-                "type": "record",
-                "fields": [{
-                    "name": "Defined",
-                    "type": {
-                        "name": "Defined",
-                        "type": "record",
-                        "doc": "Meta data that is defined on column level.",
-                        "fields": [
-                            {
-                                "name": "Data_type",
-                                "type": "string",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "data_length",
-                                "type": "int",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "Precision",
-                                "type": "int",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "scale",
-                                "type": "int"
-
-                            },
-                            {
-                                "name": "data_scale",
-                                "type": "int",
-                                "doc": ""
-
-                            }
-                            ]
-                    }
-                },
-
-                    {
-                        "name": "Inferred",
-                        "type": {
-                            "name": "Inferred",
-                            "type": "record",
-                            "doc": "Meta data that we have in column level.",
-                            "fields": [
-                            {
-                                "name": "Data_type",
-                                "type": "string",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "data_length",
-                                "type": "int",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "Precision",
-                                "type": "int",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "scale",
-                                "type": "int",
-                                "doc": ""
-
-                            },
-                            {
-                                "name": "data_scale",
-                                "type": "int",
-                                "doc": ""
-
-                            }
-                            ]
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "name": "domain_highlights",
-            "type":
-            [
-            {
-                "name": "domain_highlights",
-                "type": "record",
-                "doc": "Contains all the aggregations in the report.",
-                "fields": [
-                    {
-                        "name": "TotalRows",
-                        "type": "int",
-                        "doc": "Total number of rows in the column."
-
-                    },
-                    {
-                        "name": "Cardinality",
-                        "type": "int",
-                        "doc": "Number of unique/distinct values in the column."
-
-                    },
-                    {
-                        "name": "per_of_Cardinality",
-                        "type": "float",
-                        "doc": "Percentage of unique values in the column."
+"""Data Element Profiler main module,Argument -1 still needs to be passed."""
 
 
-                    },
-                    {
-                        "name": "Nulls",
-                        "type": "int",
-                        "doc": "Number of nulls in the column."
-
-                    },
-                    {
-                        "name": "no_of_general_formats",
-                        "type": "int",
-                        "items": "string",
-                        "doc": "Total number of unique formats in column."
-
-                    },
-                    {
-                    "name": "general_formats",
-                    "doc": "List of different types of general formats in the column.",
-                    "type":
-					{
-						"type": "array",
-						"items": "string",
-						"name": "general_formats"
-					}
+import configparser
+import json
+from grp_bank_dq_engine_dindu.netezza import NetezzaClient
 
 
-                    },
-                    {
-                        "name": "Lowest_Value",
-                        "type": "string",
-                        "doc": "Lowest value in the column."
-
-                    },
-                    {
-                        "name": "Highest_Value",
-                        "type": "string",
-                        "doc": "Highest value in the column."
-
-                    },
-                    {
-                        "name": "Median_Value",
-                        "type": "string",
-                        "doc": "Median value in the column."
-
-                    },
-                    {
-                        "name": "Least_Frequent_Value",
-                        "type": "string",
-                        "doc": "Least frequent value in the column."
-
-                    },
-                    {
-                        "name": "Lowest_Frequency",
-                        "type": "int",
-                        "doc": "frequency of the lowest frequency value in the column."
-
-                    },
-                    {
-                        "name": "Lowest_Frequency_percentage",
-                        "type": "float",
-                        "doc": "percentage of frequency of the lowest frequency value in the column."
-
-                    },
-                    {
-                        "name": "Highest_Frequent_Value",
-                        "type": "int",
-                        "doc": "Highest frequent value in the column."
-
-                    },
-                    {
-                        "name": "Highest_Frequency",
-                        "type": "int",
-                        "doc": "frequency of the lowest frequency value in the column."
-
-                    },
-                    {
-                        "name": "highest_Frequency_percentage",
-                        "type": "float",
-                        "doc": "percentage of frequency of the lowest frequency value in the column."
-
-                    }
-
-                ]
-            }
-            ]
-
-        },
-		{
-            "name": "domain_values",
-            "type":
-            [
-            {
-                "name": "domain_values",
-                "type": "record",
-                "fields":
-				[
-				{
-
-                    "name": "bot_25",
-                    "doc": "bot 25 % (quarter) of distinct values in array",
-                    "type":
-						{
-							"type": "array",
-							"items":
-							    {
-							        "type": "record",
-                                    "name": "bot_25_perc_unqiue",
-                                    "fields":
-                                    [
-                                    {
-                                        "name": "bot_25_unique_values",
-                                        "doc": "bot 25 % (quarter) of distinct values in array.",
-                                        "type": "double"
-                                    },
-                                    {
-                                        "name": "freq_bot_25_unique_values",
-                                        "doc": "Frequency of bot 25 % (quarter) of distinct values in array.",
-                                        "type": "int"
-                                    },
-
-                                    {
-                                        "name": "perc_freq_bot_25_unique_values",
-                                        "doc": "Percentage of frequency of bot 25 % (quarter) of distinct values in array.",
-                                        "type": "float"
-                                    }
-                                    ]
-							    }
-						}
-
-				},
-				{
-
-                    "name": "top_25",
-                    "doc": "top 25 % (quarter) of distinct values in array",
-                    "type":
-						{
-							"type": "array",
-							"items":
-							    {
-							        "type": "record",
-                                    "name": "top_25_perc_unqiue",
-                                    "fields":
-                                    [
-                                    {
-                                        "name": "top_25_unique_values",
-                                        "doc": "top 25 % (quarter) of distinct values in array.",
-                                        "type": "double"
-                                    },
-                                    {
-                                        "name": "freq_top_25_unique_values",
-                                        "doc": "Frequency of top 25 % (quarter) of distinct values in array.",
-                                        "type": "int"
-                                    },
-
-                                    {
-                                        "name": "perc_freq_top_25_unique_values",
-                                        "doc": "Percentage of frequency of top 25 % (quarter) of distinct values in array.",
-                                        "type": "float"
-                                    }
-                                    ]
-							    }
-						}
-
-				}
+list_tables = ('PBKGPDMDB.ADMIN.M_BFT_FC_TRN_FIX_TERM_MNTY',
+               'PBKDMDB.ADMIN.M_BCC_FC_ACCT_DTL_MLY'
+               'PBKDMDB.ADMIN.M_BCH_FC_MEM_DIGITAL_AGG',
+               'PBKDMDB.ADMIN.M_BCC_FC_ACCT_AGG_MLY',
+               'PBKDMDB.ADMIN.M_CPF_FC_MO_CNSMR_LOAN_ARGT_DTL',
+               'PBKGPDMDB.ADMIN.M_BCC_DM_ARG_CREDIT_CARD',
+               'PBKDMDB.ADMIN.M_BCH_FC_MASTER_CALL_AGG',
+               'PBKGPDMDB.ADMIN.M_BDP_FC_TRN_TEXT_SAVINGS_TRAN',
+               'PBKGPDMDB.ADMIN.M_BCC_DM_ORG_CRCD_SCORE',
+               'PBKGPDMDB.ADMIN.M_BDP_FC_TRN_SAV_BOOST_TRAN',
+               'PBKGPDMDB.ADMIN.M_BDP_DM_ARG_OVDF_FNDG',
+               'PBKDMDB.ADMIN.M_BCL_CU_LOAN_FORECAST',
+               'PBKGPDMDB.ADMIN.M_BDP_FC_TRN_TEXT_MSG_COMMAND',
+               'PBKGPDMDB.ADMIN.M_BHL_DM_ARG_MTG_PII',
+               'PBKGPDMDB.ADMIN.M_BCC_DM_ORG_CRCD_APP_FULM',
+               'PBKDMDB.ADMIN.M_BCH_FC_VL_TAG_TRANS_DTL',
+               'PBKDMDB.ADMIN.M_BDP_DM_TRANS_CHAR',
+               'PBKDMDB.ADMIN.M_BCH_FC_MASTER_CALL_DTL',
+               'PBKGPDMDB.ADMIN.M_BDP_FC_ARG_DEM_DEP_BAL_DLY',
+               'PBKDMDB.ADMIN.M_BRK_CS_CC_LN_ORIG_DLY',
+               'PBKDMDB.ADMIN.M_BRK_CS_CR_CARD_SVC_MLY',
+               'PBKGPDMDB.ADMIN.M_BFT_DM_ARG_FIXED_TERM_DEP',
+               'PBKGPDMDB.ADMIN.M_BDP_FC_TRN_DEM_DEP_MNTY',
+               'PBKGPDMDB.ADMIN.M_BCC_FC_ARG_CRCD_BAL_DLY',
+               'PBKGPDMDB.ADMIN.M_BDP_DM_ARG_DEMAND_DEP',
+               'PBKGPDMDB.ADMIN.M_BHL_FC_ARG_MTG_BAL_DLY',
+               'PBKDMDB.ADMIN.M_BCL_CU_APPLICATION_PACKAGE',
+               'PBKGPDMDB.ADMIN.M_BDB_DM_ARG_DEBT_PROT_CLAIM_DTL',
+               'PBKDMDB.ADMIN.M_BDP_FC_CHK_ACCT_DTL_MLY',
+               'PBKGPDMDB.ADMIN.M_BHL_FC_ORG_MTG_LN_APP_EVENT',
+               'PBKGPDMDB.ADMIN.M_BHL_DM_ARG_MORTGAGE_LN',
+               'PBKGPDMDB.ADMIN.M_BDP_DM_ARG_TEXT_SAVINGS',
+               'PBKDMDB.ADMIN.M_BNK_CU_FACTA_ALERT_CLAIMS',
+               'PBKGPDMDB.ADMIN.M_BCL_FC_ARG_CSM_LN_BAL_DLY',
+               'PBKDMDB.ADMIN.M_BDP_FC_CHK_ACCT_AGG_MLY',
+               'PBKDMDB.ADMIN.M_BCP_FC_PROD_ACQ_MLY',
+               'PBKDMDB.ADMIN.M_BCH_FC_VOICE_LINE_CALL_AGG',
+               'PBKDMDB.ADMIN.M_BDP_FC_ACCT_DTL_MLY',
+               'PBKDMDB.ADMIN.M_MDS_FC_AGENT_SCORE_AGG',
+               'PBKDMDB.ADMIN.M_BCC_FC_APP_STATUS_AGG',
+               'PBKGPDMDB.ADMIN.M_BCL_DM_ARG_CONSUMER_LOAN',
+               'PBKGPDMDB.ADMIN.M_BDB_DM_ARG_DEBT_PROTECTION',
+               'PBKGPDMDB.ADMIN.M_BCC_FC_ARG_CRCD_BAL_MLY',
+               'PBKGPDMDB.ADMIN.M_BHL_FC_ORG_MTG_APP_STAT_EVT',
+               'PBKDMDB.ADMIN.M_BDP_FC_PST_TRN_MER_AGG_MLY',
+               'PBKGPDMDB.ADMIN.M_BCC_DM_ORG_CRCD_APPL',
+               'PBKDMDB.ADMIN.M_BCL_CU_SERVICING_DTL',
+               'PBKGPDMDB.ADMIN.M_BFT_FC_ARG_FIX_DEP_BAL_DLY',
+               'PBKGPDMDB.ADMIN.M_BDP_DM_ARG_SAVINGS_BOOSTER',
+               'PBKDMDB.ADMIN.M_BCH_FC_MEM_ACTIVE_MLY',
+               'PBKGPDMDB.ADMIN.M_BCC_DM_ORG_CRCD_APP',
+               'PBKGPDMDB.ADMIN.M_BHL_DM_ORG_MTG_LN_APP')
 
 
-				]
-
-			}
-			]
-		}
+config = configparser.ConfigParser()
+config.read('database_logins.ini')
 
 
-    ]
-}
+def do_our_task(connection, table: str):
+    """Get all "*SK*" elements of `table` that are an int* type.
+
+    yeild {columnname, datatype}
+    """
+    query_2 = """
+            select column_name, DATA_TYPE
+            from INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_NAME = '$table'
+            AND COLUMN_NAME  LIKE '%_SK'
+            AND DATA_TYPE IN ('INTEGER','SMALLINT','BIGINT');
+            """
+
+    for _ in connection.sql(query_2, dict(table=table)).itertuples():
+        print(tuple(_)[1:])
+        yield tuple(_)[1:]
+
+
+def main():
+    """Run from the cli."""
+    # setup task from input
+    args = dict(config.items('dbdetails'))
+    # connect to database
+    client = NetezzaClient(**args)
+    with client.connection as connection:
+        for table in list_tables:
+            table = table.rpartition('.')[-1].strip()
+            sk_elements = do_our_task(connection, table)
+            print(json.dumps(dict(tablename=table,
+                                  elements=[element_name for element_name, _ in
+                                            sk_elements])))
+
+
+main()
