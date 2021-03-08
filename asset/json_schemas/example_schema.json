@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://mike.thisdomain.doesnotexist/spacestation/2019/11/27",
+    "title": "Spacestation Schema",
+    "description": "this schema describes a spacestation in some of Mikes tutorials",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 20
+        },
+        "population": {
+            "type": "integer",
+            "description": "The population shows current number of people on the spacestation",
+            "exclusiveMinimum": 5,
+            "exclusiveMaximum": 10000
+        },
+        "active":{
+            "type": "boolean"
+        },
+        "plants": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "plantname":{
+                        "type": "string"
+                    },
+                    "leafs": {
+                        "type": "integer"
+                    },
+                    "poisonous": {
+                        "type": "boolean"
+                    }
+                },
+                "required": ["leafs", "poisonous", "plantname"]
+            }
+        }
+    },
+    "required": ["name", "active", "plants", "population"]
+}
